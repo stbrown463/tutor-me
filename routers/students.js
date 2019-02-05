@@ -4,6 +4,7 @@ const router = express.Router();
 
 const Student = require('../models/students');
 const Tutor = require('../models/tutors');
+const Extras = require('../models/extras');
 
 /********** MIDDLEWARE **********/
 
@@ -55,6 +56,11 @@ router.get('/:id/edit', async (req, res) => {
 //Update Route
 router.put('/:id', async (req, res) => {
     try {
+        console.log(req.body.subjects)
+        const subjectsArray = req.body.subjects.split(',')
+        console.log(subjectsArray);
+        req.body.subjects = subjectsArray
+        console.log(req.body.subjects[0]);
         const updatedStudent = await Student.findByIdAndUpdate(req.params.id, req.body, {new: true});
 
         res.redirect(`/students/${updatedStudent._id}`);

@@ -10,7 +10,7 @@ const studentSchema = new mongoose.Schema({
     age: Number,
     profilePicture: String,
     description: String,
-    subjects: [extras.subjectSchema],
+    subjects: [String],
     availability: [extras.availabilitySchema],
     rating: Number,
     feedback: [extras.commentSchema],
