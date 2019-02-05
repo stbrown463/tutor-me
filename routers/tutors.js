@@ -55,6 +55,8 @@ router.get('/:id/edit', async (req, res) => {
 //Update Route
 router.put('/:id', async (req, res) => {
     try {
+        req.body.subjects = req.body.subjects.split(',')
+        console.log(req.body.subjects[1]);
         const updatedTutor = await Tutor.findByIdAndUpdate(req.params.id, req.body, {new: true});
 
         res.redirect(`/tutors/${updatedTutor._id}`);
