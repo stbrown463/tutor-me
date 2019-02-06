@@ -43,10 +43,16 @@ router.post('/', async (req, res) => {
 //Edit Route
 router.get('/:id/edit', async (req, res) => {
     try {
-        const foundTutor = await Tutor.findById(req.params.id);
-        res.render('../views/tutors/edit.ejs', {
-            tutor: foundTutor
-        });
+        console.log(req.session.user._id);
+        if (req.session.user._id != req.params.id) {
+            req.session.message = "You do not have access to edit this user"
+            res.redirect('/')
+        } else {
+            const foundTutor = await Tutor.findById(req.params.id);
+            res.render('../views/tutors/edit.ejs', {
+                tutor: foundTutor
+            });  
+        }
     } catch (err) {
         res.send(err);
     }

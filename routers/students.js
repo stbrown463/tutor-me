@@ -44,10 +44,15 @@ router.post('/', async (req, res) => {
 //Edit Route
 router.get('/:id/edit', async (req, res) => {
     try {
-        const foundStudent = await Student.findById(req.params.id);
-        res.render('../views/students/edit.ejs', {
-            student: foundStudent
-        });
+        if (req.session.user._id != req.params.id) {
+            req.session.message = "You do not have access to edit this user"
+            res.redirect('/')
+        } else {
+            const foundStudent = await Student.findById(req.params.id);
+            res.render('../views/students/edit.ejs', {
+                student: foundStudent
+            });
+        }
     } catch (err) {
         res.send(err);
     }
@@ -62,7 +67,6 @@ router.put('/:id', async (req, res) => {
         req.body.subjects = subjectsArray
         console.log(req.body.subjects[0]);
         const updatedStudent = await Student.findByIdAndUpdate(req.params.id, req.body, {new: true});
-
         res.redirect(`/students/${updatedStudent._id}`);
     } catch (err) {
         res.send(err);
